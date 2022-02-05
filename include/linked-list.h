@@ -18,7 +18,18 @@ typedef struct llist {
     size_t DataSize;
 } llist_t;
 
-llist_t *createLinkedList();
+typedef struct double_node {
+    value_type_t *data;
+    struct node *nextPrt;
+    struct node *prevPrt;
+} double_node_t;
+
+
+//##############################################
+//###############   LINKED LIST   ##############
+//##############################################
+
+llist_t *createLList();
 
 bool isEmptyLList(llist_t *llist);
 
@@ -54,5 +65,12 @@ value_type_t getValueByIndex(llist_t *llist, uint8_t index);
 value_type_t *getPtrValueByIndex(llist_t *llist, uint8_t index);
 
 void printLList(llist_t *llist, uint8_t elementCount);
+
+
+//##############################################
+//###########   DOUBLE LINKED LIST   ###########
+//##############################################
+
+llist_t *createDoubleLList();
 
 #endif //LINKED_LIST_H

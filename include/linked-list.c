@@ -5,7 +5,7 @@
 
 #include "linked-list.h"
 
-llist_t *createLinkedList(){
+llist_t *createLList(){
     llist_t *llist = (llist_t *)malloc(sizeof(llist_t));
     llist->head = NULL;
     llist->size = 0;
