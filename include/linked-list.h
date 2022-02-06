@@ -18,18 +18,19 @@ typedef struct llist {
     size_t DataSize;
 } llist_t;
 
-typedef struct llist {
-    double_node_t *head;
-    double_node_t *back;
+typedef struct dnode {
+    value_type_t *data;
+    struct dnode *nextPrt;
+    struct dnode *prevPrt;
+} dnode_t;
+
+typedef struct dllist {
+    dnode_t *head;
+    dnode_t *back;
     uint8_t size;
     size_t DataSize;
-} double_llist_t;
+} dllist_t;
 
-typedef struct double_node {
-    value_type_t *data;
-    struct node *nextPrt;
-    struct node *prevPrt;
-} double_node_t;
 
 
 //##############################################
@@ -78,18 +79,22 @@ void printLList(llist_t *llist, uint8_t elementCount);
 //###########   DOUBLE LINKED LIST   ###########
 //##############################################
 
-double_llist_t *createDoubleLList();
+dllist_t *createDLList();
 
-bool isEmptyDoubleLList(double_llist_t *llist);
+bool isEmptyDLList(dllist_t *llist);
 
-double_node_t *createDoubleNodeLList(size_t dataSize);
+dnode_t *createDNodeLList(size_t dataSize);
 
-double_node_t *insertHeadDoubleLList(double_llist_t *llist, value_type_t value);
-double_node_t *insertPtrHeadDoubleLList(double_llist_t *llist, value_type_t *value);
+dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value);
+dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value);
 
-double_node_t *insertDoubleLList(double_llist_t *llist, uint8_t index, value_type_t value);
-double_node_t *__head_or_back(double_llist_t *llist, uint8_t index);
-double_node_t *insertDoublePtrLList(double_llist_t *llist, uint8_t index, value_type_t *value);
-void __wraped_insertDoubleLList(double_node_t *head, double_node_t *newElement, int8_t destinationIndex);
+dnode_t *insertBackDLList(dllist_t *llist, value_type_t value);
+dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value);
+
+dnode_t *insertDLList(dllist_t *llist, uint8_t index, value_type_t value);
+dnode_t *__head_or_back(dllist_t *llist, uint8_t index);
+dnode_t *insertDPtrLList(dllist_t *llist, uint8_t index, value_type_t *value);
+void __wraped_insertDLList(dnode_t *head, dnode_t *back, dnode_t *newElement, int8_t destinationIndex);
+void printDLList(dllist_t *llist, uint8_t elementCount);
 
 #endif //LINKED_LIST_H

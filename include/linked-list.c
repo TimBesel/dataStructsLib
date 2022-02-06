@@ -310,7 +310,7 @@ value_type_t *getPtrValueByIndex(llist_t *llist, uint8_t index){
 void printLList(llist_t *llist, uint8_t elementCount){
 
     node_t *currentElement = llist->head;
-    const char linker[] = "-->";
+    const char linker[] = "----->";
     
     printf("\n");
     while(currentElement != NULL){
@@ -328,11 +328,11 @@ void printLList(llist_t *llist, uint8_t elementCount){
 
 
 //##############################################
-//###############   LINKED LIST   ##############
+//###########   DOUBLE LINKED LIST   ###########
 //##############################################
 
-double_llist_t *createDoubleLList(){
-    double_llist_t *llist = (double_llist_t *)malloc(sizeof(double_llist_t));
+dllist_t *createDLList(){
+    dllist_t *llist = (dllist_t *)malloc(sizeof(dllist_t));
     llist->head = NULL;
     llist->back = NULL;
     llist->size = 0;
@@ -340,28 +340,12 @@ double_llist_t *createDoubleLList(){
     return llist;
 }
 
-bool isEmptyDoubleLList(double_llist_t *llist){
+bool isEmptyDLList(dllist_t *llist){
     return ((llist->head == NULL) && (llist->size == 0) && llist->back == NULL);
 }
 
-double_node_t *insertHeadDoubleLList(double_llist_t *llist, value_type_t value){
-    double_node_t *newElement = createDoubleLList(llist->DataSize);
-    if(newElement == NULL)
-        return NULL;
-
-    newElement->nextPrt = llist->head;
-    newElement->prevPrt = NULL;
-    newElement->data = value;
-    llist->head = newElement;
-    llist->size++;
-
-    return newElement;
-}
-
-double_node_t *insertPtrHeadDoubleLList(double_llist_t *llist, value_type_t *value);
-
-double_node_t *createDoubleNodeLList(size_t dataSize){
-    double_node_t *newElement = (double_node_t *)malloc(sizeof(double_node_t));
+dnode_t *createDNodeLList(size_t dataSize){
+    dnode_t *newElement = (dnode_t *)malloc(sizeof(dnode_t));
     if(!newElement)
         return NULL;
     
@@ -374,39 +358,155 @@ double_node_t *createDoubleNodeLList(size_t dataSize){
     return newElement;
 }
 
-double_node_t *insertDoubleLList(double_llist_t *llist, uint8_t index, value_type_t value){
-
-    double_node_t *usedNode = __head_or_back(llist, index);
-    int8_t destinationIndex;
-
-    if(usedNode == llist->head)
-        destinationIndex = (int8_t) (llist->size - index);
-    else if(usedNode == llist->back)
-        destinationIndex = index;
-
-    if(isEmptyDoubleLList(llist))
-        return insertEndLList(llist, value);
-    if(destinationIndex <= 0)
-         return insertHeadLList(llist, value);
-
-    double_node_t *newElement = createNodeLList(llist->DataSize);
+dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value){
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
     if(newElement == NULL)
         return NULL;
 
     *(newElement->data) = value;
-    __wraped_insertLList(llist->head, newElement, destinationIndex);
+    newElement->nextPrt = NULL;
+    newElement->prevPrt = llist->head;
+    if(isEmptyDLList(llist))
+        llist->back = newElement;
+
+    llist->head = newElement;
     llist->size++;
 
     return newElement;
 }
 
-double_node_t *__head_or_back(double_llist_t *llist, uint8_t index){
+dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value){
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
+    if(newElement == NULL)
+        return NULL;
+
+    newElement->data = value;
+    newElement->nextPrt = NULL;
+    newElement->prevPrt = llist->head;
+    if(isEmptyDLList(llist))
+        llist->back = newElement;
+
+    llist->head = newElement;
+    llist->size++;
+
+    return newElement;
+}
+
+dnode_t *insertBackDLList(dllist_t *llist, value_type_t value){
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
+    if(newElement == NULL)
+        return NULL;
+
+    *(newElement->data) = value;
+    newElement->nextPrt = llist->back;
+    newElement->prevPrt = NULL;
+
+    if(!isEmptyDLList(llist))
+        llist->back->prevPrt = newElement;
+    else
+        llist->head = newElement;
+    
+    llist->back = newElement;
+    llist->size++;
+
+    return newElement;
+}
+
+dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value){
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
+    if(newElement == NULL)
+        return NULL;
+
+    newElement->data = value;
+    newElement->nextPrt = llist->back;
+    newElement->prevPrt = NULL;
+
+    if(!isEmptyDLList(llist))
+        llist->back->prevPrt = newElement;
+    else
+        llist->head = newElement;
+    
+    llist->back = newElement;
+    llist->size++;
+
+    return newElement;
+}
+
+dnode_t *insertDLList(dllist_t *llist, uint8_t index, value_type_t value){
+
+    dnode_t *usedNode = __head_or_back(llist, index);
+    int8_t destinationIndex;
+
+    if(usedNode == llist->head)
+        destinationIndex = (int8_t) (llist->size - index);
+    else if(usedNode == llist->back)
+        destinationIndex = (int8_t)index;
+
+    if(isEmptyDLList(llist))
+        return insertBackDLList(llist, value);
+    if(destinationIndex <= 0)
+         return insertHeadDLList(llist, value);
+
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
+    if(newElement == NULL)
+        return NULL;
+
+    *(newElement->data) = value;
+    if(usedNode == llist->head)
+        __wraped_insertDLList(llist->head, NULL, newElement, destinationIndex);
+    else if(usedNode == llist->back)
+        __wraped_insertDLList(NULL, llist->back, newElement, destinationIndex);
+
+    llist->size++;
+
+    return newElement;
+}
+
+dnode_t *__head_or_back(dllist_t *llist, uint8_t index){
     if((llist->size/2) <= (index + 1u))
         return llist->head;
     else 
         return llist->back;
 }
 
-double_node_t *insertDoublePtrLList(double_llist_t *llist, uint8_t index, value_type_t *value);
+void __wraped_insertDLList(dnode_t *head, dnode_t *back, dnode_t *newElement, int8_t destinationIndex){
 
-void __wraped_insertDoubleLList(double_node_t *head, double_node_t *newElement, int8_t destinationIndex);
+    dnode_t *currentElement;
+
+    if(head != NULL && back == NULL) currentElement = head;
+    else if(head == NULL && back != NULL) currentElement = back;
+    else return;
+
+    for(uint8_t i = 0; i < destinationIndex; i++){
+        
+        if(head != NULL && back == NULL) currentElement = currentElement->prevPrt;
+        else if(head == NULL && back != NULL) currentElement = currentElement->nextPrt;
+        else return;
+    }
+
+    newElement->prevPrt = currentElement;
+    newElement->nextPrt = currentElement->nextPrt;
+    currentElement->nextPrt->prevPrt = newElement;
+    currentElement->nextPrt = newElement;
+}
+
+dnode_t *insertDPtrLList(dllist_t *llist, uint8_t index, value_type_t *value);
+
+void printDLList(dllist_t *llist, uint8_t elementCount){
+
+    dnode_t *currentElement = llist->head;
+    const char linker[] = "<---->";
+    
+    printf("\n");
+    while(currentElement != NULL){
+        if(currentElement != llist->head)
+            printf(" %s ", linker);
+
+        for(int i = 0; i < elementCount; i++){
+            if(i != 0)
+                printf(" ");
+            printf("%d", *(currentElement->data + i));
+        }
+        currentElement = currentElement->prevPrt;
+    }
+}
