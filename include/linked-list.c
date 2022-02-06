@@ -524,6 +524,30 @@ dnode_t *__back_to_head(dnode_t *back, int8_t steps){
     return cE;
 }
 
+dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index){
+    return __get_index_element(llist, index);
+}
+
+dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value){
+    dnode_t *currentElement = llist->head;
+    while(currentElement != NULL){
+        if(*(currentElement->data) == value)
+            return currentElement;
+        currentElement = currentElement->prevPrt;
+    }
+    return NULL;
+}
+
+dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value){
+    dnode_t *currentElement = llist->head;
+    while(currentElement != NULL){
+        if(currentElement->data == value)
+            return currentElement;
+        currentElement = currentElement->prevPrt;
+    }
+    return NULL;
+}
+
 void printDLList(dllist_t *llist, uint8_t elementCount){
 
     dnode_t *currentElement = llist->head;

@@ -98,6 +98,10 @@ dnode_t *__head_or_back(dllist_t *llist, int8_t i);
 dnode_t *__head_to_back(dnode_t *head, int8_t steps);
 dnode_t *__back_to_head(dnode_t *back, int8_t steps);
 
+dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index);
+dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value);
+dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value);
+
 void printDLList(dllist_t *llist, uint8_t elementCount);
 
 #endif //LINKED_LIST_H
