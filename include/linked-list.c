@@ -432,65 +432,97 @@ dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value){
     return newElement;
 }
 
-dnode_t *insertDLList(dllist_t *llist, uint8_t index, value_type_t value){
+dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value){
 
-    dnode_t *usedNode = __head_or_back(llist, index);
-    int8_t destinationIndex;
-
-    if(usedNode == llist->head)
-        destinationIndex = (int8_t) (llist->size - index);
-    else if(usedNode == llist->back)
-        destinationIndex = (int8_t)index;
-
-    if(isEmptyDLList(llist))
-        return insertBackDLList(llist, value);
-    if(destinationIndex <= 0)
-         return insertHeadDLList(llist, value);
-
-    dnode_t *newElement = createDNodeLList(llist->DataSize);
-    if(newElement == NULL)
+    if(llist == NULL)
         return NULL;
 
-    *(newElement->data) = value;
-    if(usedNode == llist->head)
-        __wraped_insertDLList(llist->head, NULL, newElement, destinationIndex);
-    else if(usedNode == llist->back)
-        __wraped_insertDLList(NULL, llist->back, newElement, destinationIndex);
+    if(isEmptyDLList(llist))
+        return insertHeadDLList(llist, value);
+    if(index <= 0)
+        return insertBackDLList(llist, value);
+    if(index >= (llist->size - 1))
+        return insertHeadDLList(llist, value);
 
-    llist->size++;
+    dnode_t *replacingElement = __get_index_element(llist, index);
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
+
+    *(newElement->data) = value;
+
+    newElement->prevPrt = replacingElement->prevPrt;
+    newElement->nextPrt = replacingElement;
+    replacingElement->prevPrt = newElement;
+    replacingElement->prevPrt->nextPrt = newElement;
 
     return newElement;
 }
 
-dnode_t *__head_or_back(dllist_t *llist, uint8_t index){
-    if((llist->size/2) <= (index + 1u))
+dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, value_type_t *value){
+    if(llist == NULL)
+        return NULL;
+
+    if(isEmptyDLList(llist))
+        return insertPtrHeadDLList(llist, value);
+    if(index <= 0)
+        return insertPtrBackDLList(llist, value);
+    if(index >= (llist->size - 1))
+        return insertPtrHeadDLList(llist, value);
+
+    dnode_t *replacingElement = __get_index_element(llist, index);
+    dnode_t *newElement = createDNodeLList(llist->DataSize);
+
+    newElement->data = value;
+
+    newElement->prevPrt = replacingElement->prevPrt;
+    newElement->nextPrt = replacingElement;
+    replacingElement->prevPrt = newElement;
+    replacingElement->prevPrt->nextPrt = newElement;
+
+    return newElement;
+}
+
+dnode_t * __get_index_element(dllist_t *llist, int8_t i){
+
+    if(isEmptyDLList(llist))
+        return NULL;
+
+    dnode_t *usedNode = __head_or_back(llist, i);
+    if(usedNode == llist->head){
+        int8_t destinationI = (int8_t)(llist->size - 1- i);
+        if(destinationI <= 0)
+            return usedNode;
+        return __head_to_back(usedNode, destinationI);
+    } else {
+        if(i == 0)
+            return usedNode;
+        return __back_to_head(usedNode, i);
+    }
+}
+
+dnode_t *__head_or_back(dllist_t *llist, int8_t i){
+    if((llist->size/2) <= (i + 1))
         return llist->head;
     else 
         return llist->back;
 }
 
-void __wraped_insertDLList(dnode_t *head, dnode_t *back, dnode_t *newElement, int8_t destinationIndex){
-
-    dnode_t *currentElement;
-
-    if(head != NULL && back == NULL) currentElement = head;
-    else if(head == NULL && back != NULL) currentElement = back;
-    else return;
-
-    for(uint8_t i = 0; i < destinationIndex; i++){
-        
-        if(head != NULL && back == NULL) currentElement = currentElement->prevPrt;
-        else if(head == NULL && back != NULL) currentElement = currentElement->nextPrt;
-        else return;
+dnode_t *__head_to_back(dnode_t *head, int8_t steps){
+    dnode_t *cE = head;
+    for(uint8_t i = 0; i < steps; i++){
+        if(cE->prevPrt != NULL)
+            cE = cE->prevPrt;
     }
-
-    newElement->prevPrt = currentElement;
-    newElement->nextPrt = currentElement->nextPrt;
-    currentElement->nextPrt->prevPrt = newElement;
-    currentElement->nextPrt = newElement;
+    return cE;
 }
 
-dnode_t *insertDPtrLList(dllist_t *llist, uint8_t index, value_type_t *value);
+dnode_t *__back_to_head(dnode_t *back, int8_t steps){
+    dnode_t *cE = back;
+    for(uint8_t i = 0; i < steps; i++){
+        if(cE->nextPrt != NULL)
+            cE = cE->nextPrt;
+    }
+    return cE;
+}
 
 void printDLList(dllist_t *llist, uint8_t elementCount){
 

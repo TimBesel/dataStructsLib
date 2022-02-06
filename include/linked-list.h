@@ -91,10 +91,13 @@ dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value);
 dnode_t *insertBackDLList(dllist_t *llist, value_type_t value);
 dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value);
 
-dnode_t *insertDLList(dllist_t *llist, uint8_t index, value_type_t value);
-dnode_t *__head_or_back(dllist_t *llist, uint8_t index);
-dnode_t *insertDPtrLList(dllist_t *llist, uint8_t index, value_type_t *value);
-void __wraped_insertDLList(dnode_t *head, dnode_t *back, dnode_t *newElement, int8_t destinationIndex);
+dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value);
+dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, value_type_t *value);
+dnode_t * __get_index_element(dllist_t *llist, int8_t i);
+dnode_t *__head_or_back(dllist_t *llist, int8_t i);
+dnode_t *__head_to_back(dnode_t *head, int8_t steps);
+dnode_t *__back_to_head(dnode_t *back, int8_t steps);
+
 void printDLList(dllist_t *llist, uint8_t elementCount);
 
 #endif //LINKED_LIST_H
