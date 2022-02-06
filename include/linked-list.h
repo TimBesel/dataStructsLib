@@ -55,6 +55,8 @@ node_t *insertPtrLList(llist_t *llist, uint8_t index, value_type_t *value);
 void __wraped_insertLList(node_t *head, node_t *newElement, int8_t destinationIndex);
 
 node_t *getNodeByIndex(llist_t *llist, uint8_t index);
+int8_t getIndexByNode(llist_t *llist, node_t *node);
+
 node_t *getNodeByValue(llist_t *llist, uint8_t value);
 node_t *getNodeByPtrValue(llist_t *llist, uint8_t *value);
 
@@ -99,6 +101,8 @@ dnode_t *__head_to_back(dnode_t *head, int8_t steps);
 dnode_t *__back_to_head(dnode_t *back, int8_t steps);
 
 dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index);
+int8_t getIndexByDNode(dllist_t *llist, dnode_t *node);
+
 dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value);
 dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value);
 
