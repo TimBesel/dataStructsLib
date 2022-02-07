@@ -203,6 +203,16 @@ node_t *getNodeByPtrValue(llist_t *llist, uint8_t *value){
     return NULL;
 }
 
+int8_t getIndexByValueLList(llist_t *llist, value_type_t value){
+    node_t *node = getNodeByValue(llist, value);
+    return getIndexByNode(llist, node);
+}
+
+int8_t getIndexByPtrValueLList(llist_t *llist, value_type_t *value){
+    node_t *node = getNodeByPtrValue(llist, value);
+    return getIndexByNode(llist, node);
+}
+
 node_t *deleteLList(llist_t *llist){
 
     node_t *temp;
@@ -402,7 +412,7 @@ dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value){
     newElement->data = value;
     newElement->nextPrt = NULL;
     newElement->prevPrt = llist->head;
-    
+
     if(isEmptyDLList(llist))
         llist->back = newElement;
     else
@@ -529,12 +539,12 @@ dnode_t *__head_or_back(dllist_t *llist, int8_t i){
 }
 
 dnode_t *__head_to_back(dnode_t *head, int8_t steps){
-    dnode_t *cE = head;
+    dnode_t *e = head;
     for(uint8_t i = 0; i < steps; i++){
-        if(cE->prevPrt != NULL)
-            cE = cE->prevPrt;
+        if(e->prevPrt != NULL)
+            e = e->prevPrt;
     }
-    return cE;
+    return e;
 }
 
 dnode_t *__back_to_head(dnode_t *back, int8_t steps){
@@ -586,6 +596,16 @@ dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value){
         currentElement = currentElement->prevPrt;
     }
     return NULL;
+}
+
+int8_t getIndexByValueDLList(dllist_t *llist, value_type_t value){
+    dnode_t *node = getDNodeByValue(llist, value);
+    return getIndexByDNode(llist, node);
+}
+
+int8_t getIndexByPtrValueDLList(dllist_t *llist, value_type_t *value){
+    dnode_t *node = getDNodeByPtrValue(llist, value);
+    return getIndexByDNode(llist, node);
 }
 
 void printDLList(dllist_t *llist, uint8_t elementCount){

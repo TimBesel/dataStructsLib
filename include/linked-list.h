@@ -60,6 +60,9 @@ int8_t getIndexByNode(llist_t *llist, node_t *node);
 node_t *getNodeByValue(llist_t *llist, uint8_t value);
 node_t *getNodeByPtrValue(llist_t *llist, uint8_t *value);
 
+int8_t getIndexByValueLList(llist_t *llist, value_type_t value);
+int8_t getIndexByPtrValueLList(llist_t *llist, value_type_t *value);
+
 node_t *deleteLList(llist_t *llist);
 node_t *deleteNode(llist_t *llist, node_t *node);
 node_t *__get_Prev_Node(llist_t *llist, node_t *node);
@@ -105,6 +108,9 @@ int8_t getIndexByDNode(dllist_t *llist, dnode_t *node);
 
 dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value);
 dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value);
+
+int8_t getIndexByValueDLList(dllist_t *llist, value_type_t value);
+int8_t getIndexByPtrValueDLList(dllist_t *llist, value_type_t *value);
 
 void printDLList(dllist_t *llist, uint8_t elementCount);
 
