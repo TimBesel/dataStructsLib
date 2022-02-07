@@ -382,8 +382,11 @@ dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value){
     *(newElement->data) = value;
     newElement->nextPrt = NULL;
     newElement->prevPrt = llist->head;
+    
     if(isEmptyDLList(llist))
         llist->back = newElement;
+    else
+        llist->head->nextPrt = newElement;
 
     llist->head = newElement;
     llist->size++;
@@ -399,8 +402,11 @@ dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value){
     newElement->data = value;
     newElement->nextPrt = NULL;
     newElement->prevPrt = llist->head;
+    
     if(isEmptyDLList(llist))
         llist->back = newElement;
+    else
+        llist->head->nextPrt = newElement;
 
     llist->head = newElement;
     llist->size++;
@@ -552,12 +558,14 @@ int8_t getIndexByDNode(dllist_t *llist, dnode_t *node){
 
     dnode_t *currentElement = llist->back;
     for(int8_t i = 0; (i < llist->size) && (currentElement != NULL); i++){
+        printf("\ne: %d", *currentElement->data);
         if(currentElement == node)
             return i;
         currentElement = currentElement->nextPrt;
     }
 
     return -1;
+    return 0;
 }
 
 dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value){
