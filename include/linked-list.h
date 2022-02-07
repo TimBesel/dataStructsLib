@@ -15,7 +15,6 @@ typedef struct node {
 typedef struct llist {
     node_t *head;
     uint8_t size;
-    size_t DataSize;
 } llist_t;
 
 typedef struct dnode {
@@ -28,10 +27,7 @@ typedef struct dllist {
     dnode_t *head;
     dnode_t *back;
     uint8_t size;
-    size_t DataSize;
 } dllist_t;
-
-
 
 //##############################################
 //###############   LINKED LIST   ##############
@@ -41,7 +37,7 @@ llist_t *createLList();
 
 bool isEmptyLList(llist_t *llist);
 
-node_t *createNodeLList(size_t dataSize);
+node_t *createNode(size_t dataSize);
 
 node_t *insertHeadLList(llist_t *llist, value_type_t value);
 node_t *insertPtrHeadLList(llist_t *llist, value_type_t *value);
@@ -88,7 +84,7 @@ dllist_t *createDLList();
 
 bool isEmptyDLList(dllist_t *llist);
 
-dnode_t *createDNodeLList(size_t dataSize);
+dnode_t *createDNode(size_t dataSize);
 
 dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value);
 dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value);
