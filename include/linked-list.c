@@ -213,7 +213,7 @@ int8_t getIndexByPtrValueLList(llist_t *llist, value_type_t *value){
     return getIndexByNode(llist, node);
 }
 
-node_t *deleteLList(llist_t *llist){
+llist_t *deleteLList(llist_t *llist){
 
     node_t *temp;
     node_t *currentElement = llist->head;
@@ -232,7 +232,7 @@ node_t *deleteLList(llist_t *llist){
     return NULL;
 }
 
-node_t *__get_Prev_Node(llist_t *llist, node_t *node){
+node_t *__get_Next_Node(llist_t *llist, node_t *node){
 
     node_t *currentNode = llist->head;
     if(currentNode == node)
@@ -269,22 +269,19 @@ node_t *deleteNode(llist_t *llist, node_t *node){
         return __free_node(node);
     }
 
-    node_t *prevElement = __get_Prev_Node(llist, node);
-    if(prevElement == NULL)
+    node_t *nextElement = __get_Next_Node(llist, node);
+    if(nextElement == NULL)
         return node;
 
-    if(prevElement != node)
-        prevElement->prevPrt = node->prevPrt;
+    if(nextElement != node)
+        nextElement->prevPrt = node->prevPrt;
 
     llist->size--;
     return __free_node(node);
 }
 
 node_t *deleteIndexNode(llist_t *llist, uint8_t index){
-    if(llist->head == NULL)
-        return NULL;
-
-    if(isEmptyLList(llist))
+   if(isEmptyLList(llist))
         return NULL;
         
     node_t *node = getNodeByIndex(llist, index);
@@ -292,9 +289,6 @@ node_t *deleteIndexNode(llist_t *llist, uint8_t index){
 }
 
 node_t *popHeadLList(llist_t *llist){
-    if(llist->head == NULL)
-        return NULL;
-
     if(isEmptyLList(llist))
         return NULL;
 
@@ -606,6 +600,90 @@ int8_t getIndexByValueDLList(dllist_t *llist, value_type_t value){
 int8_t getIndexByPtrValueDLList(dllist_t *llist, value_type_t *value){
     dnode_t *node = getDNodeByPtrValue(llist, value);
     return getIndexByDNode(llist, node);
+}
+
+dllist_t *deleteDLList(dllist_t *llist){
+    dnode_t *temp;
+    dnode_t *currentElement = llist->head;
+
+    while(currentElement != NULL){
+
+        if(currentElement->data != NULL)
+            free(currentElement->data);
+        
+        temp = currentElement->prevPrt;
+        free(currentElement);
+        currentElement = temp;
+    }
+    free(llist);
+
+    return NULL;
+}
+
+dnode_t *deleteDNode(dllist_t *llist, dnode_t *node){
+    if(node == NULL)
+        return NULL;
+    
+    if(isEmptyDLList(llist))
+        return NULL;
+
+    if(node == llist->head){
+        llist->head = node->prevPrt;
+        if(node == llist->back)
+            llist->back = NULL;
+        if(llist->head != NULL)
+            llist->head->nextPrt = NULL;
+        llist->size--;
+        return __free_dnode(node);
+    }
+
+    if(node == llist->back){
+        llist->back = node->nextPrt;
+        if(node == llist->head)
+            llist->head = NULL;
+        if(llist->back != NULL)
+            llist->back->prevPrt = NULL;
+        llist->size--;
+        return __free_dnode(node);
+    }
+    
+    if(node->nextPrt != NULL)
+        node->nextPrt->prevPrt = node->prevPrt;
+    if(node->prevPrt != NULL)
+        node->prevPrt->nextPrt = node->nextPrt;
+
+    llist->size--;
+    return __free_dnode(node);
+}
+
+dnode_t * __free_dnode(dnode_t *node){
+    if(node->data != NULL)
+        free(node->data);
+    if(node != NULL)
+        free(node);
+    return NULL;
+}
+
+dnode_t *deleteIndexDNode(dllist_t *llist, int8_t index){
+    if(isEmptyDLList(llist))
+        return NULL;
+        
+    dnode_t *node = getDNodeByIndex(llist, index);
+    return deleteDNode(llist, node);
+}
+
+dnode_t *popHeadDLList(dllist_t *llist){
+    if(isEmptyDLList(llist))
+        return NULL;
+
+    return deleteDNode(llist, llist->head);
+}
+
+dnode_t *popDLList(dllist_t *llist){
+    if(isEmptyDLList(llist))
+        return NULL;
+
+    return deleteDNode(llist, llist->back);
 }
 
 void printDLList(dllist_t *llist, uint8_t elementCount){
