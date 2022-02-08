@@ -63,7 +63,7 @@ llist_t *deleteLList(llist_t *llist);
 node_t *deleteNode(llist_t *llist, node_t *node);
 node_t *__get_Next_Node(llist_t *llist, node_t *node);
 node_t * __free_node(node_t *node);
-node_t *deleteIndexNode(llist_t *llist, uint8_t index);
+node_t *deleteNodeByIndex(llist_t *llist, uint8_t index);
 node_t *popHeadLList(llist_t *llist);
 node_t *popLList(llist_t *llist);
 
@@ -72,6 +72,15 @@ value_type_t *getPtrValueByNode(node_t *node);
 
 value_type_t getLListValueByIndex(llist_t *llist, uint8_t index);
 value_type_t *getLListPtrValueByIndex(llist_t *llist, uint8_t index);
+
+node_t *changeNodeValue(node_t *node, value_type_t value);
+node_t *changeNodePtrValue(node_t *node, value_type_t *value);
+node_t *changeLListValue(llist_t *llist, uint8_t index, value_type_t value);
+node_t *changeLListPtrValue(llist_t *llist, uint8_t index, value_type_t *value);
+
+node_t *changeNodeIndex(llist_t *llist, node_t *node, uint8_t newIndex);
+void *switchNodes(llist_t *llist, node_t *nodeA, node_t nodeB);
+void *switchNodesByIndex(llist_t *llist, uint8_t indexA, uint8_t indexB);
 
 void printLList(llist_t *llist, uint8_t elementCount);
 
@@ -110,15 +119,24 @@ int8_t getIndexByPtrValueDLList(dllist_t *llist, value_type_t *value);
 dllist_t *deleteDLList(dllist_t *llist);
 dnode_t *deleteDNode(dllist_t *llist, dnode_t *node);
 dnode_t * __free_dnode(dnode_t *node);
-dnode_t *deleteIndexDNode(dllist_t *llist, int8_t index);
+dnode_t *deleteDNodeByIndex(dllist_t *llist, int8_t index);
 dnode_t *popHeadDLList(dllist_t *llist);
 dnode_t *popDLList(dllist_t *llist);
 
 value_type_t getValueByDNode(dnode_t *node);
 value_type_t *getPtrValueByDNode(dnode_t *node);
 
-value_type_t getDLListValueByIndex(dllist_t *llist, uint8_t index);
-value_type_t *getDLListPtrValueByIndex(dllist_t *llist, uint8_t index);
+value_type_t getDLListValueByIndex(dllist_t *llist, int8_t index);
+value_type_t *getDLListPtrValueByIndex(dllist_t *llist, int8_t index);
+
+dnode_t *changeDNodeValue(dnode_t *node, value_type_t value);
+dnode_t *changeDNodePtrValue(dnode_t *node, value_type_t *value);
+dnode_t *changeDLListValue(dllist_t *llist, int8_t index, value_type_t value);
+dnode_t *changeDLListPtrValue(dllist_t *llist, int8_t index, value_type_t *value);
+
+dnode_t *changeDNodeIndex(dllist_t *llist, dnode_t *node, int8_t newIndex);
+void switchDNodes(dnode_t *nodeA, dnode_t *nodeB);
+void switchDNodesByIndex(dllist_t *llist, int8_t indexA, int8_t indexB);
 
 void printDLList(dllist_t *llist, uint8_t elementCount);
 
