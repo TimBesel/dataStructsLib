@@ -11,18 +11,21 @@
 
 llist_t *createLList(){
     llist_t *llist = (llist_t *)malloc(sizeof(llist_t));
+    if(llist == NULL)
+        return NULL;
     llist->head = NULL;
     llist->size = 0;
     return llist;
 }
 
 bool isEmptyLList(llist_t *llist){
+    if(llist == NULL) return NULL;
     return ((llist->head == NULL) && (llist->size == 0));
 }
 
 node_t *createNode(size_t dataSize){
     node_t *newElement = (node_t *)malloc(sizeof(node_t));
-    if(!newElement)
+    if(newElement == NULL)
         return NULL;
     
     newElement->data = (value_type_t *)malloc(dataSize);
@@ -39,6 +42,8 @@ node_t *insertHeadLList(llist_t *llist, value_type_t value){
     node_t *newElement = createNode(sizeof(value_type_t));
     if(newElement == NULL)
         return NULL;
+    if(llist == NULL)
+        return NULL;
 
     newElement->prevPrt = llist->head;
     *(newElement->data) = value;
@@ -52,6 +57,8 @@ node_t *insertPtrHeadLList(llist_t *llist, value_type_t *value){
     
     node_t *newElement = createNode(sizeof(value_type_t));
     if(newElement == NULL)
+        return NULL;
+    if(llist == NULL)
         return NULL;
 
     newElement->prevPrt = llist->head;
@@ -149,10 +156,12 @@ void __wraped_insertLList(node_t *head, node_t *newElement, int8_t destinationIn
 }
 
 node_t *getNodeByIndex(llist_t *llist, uint8_t index){
-    int8_t destinationIndex = (int8_t)(llist->size - index);
 
     if(isEmptyLList(llist))
         return NULL;
+
+    int8_t destinationIndex = (int8_t)(llist->size - index);
+
     if(destinationIndex < 0)
         return llist->head;
 
@@ -167,7 +176,6 @@ node_t *getNodeByIndex(llist_t *llist, uint8_t index){
 int8_t getIndexByNode(llist_t *llist, node_t *node){
 
     if(isEmptyLList(llist)) return -1;
-    if(llist == NULL) return -1;
     if(node == NULL) return -1;
 
     node_t *currentElement = llist->head;
@@ -182,6 +190,9 @@ int8_t getIndexByNode(llist_t *llist, node_t *node){
 
 node_t *getNodeByValue(llist_t *llist, uint8_t value){
 
+    if(llist == NULL)
+        return NULL;
+
     node_t *currentElement = llist->head;
     while(currentElement != NULL){
         if(*(currentElement->data) == value)
@@ -193,6 +204,11 @@ node_t *getNodeByValue(llist_t *llist, uint8_t value){
 
 node_t *getNodeByPtrValue(llist_t *llist, uint8_t *value){
 
+    if(llist == NULL)
+        return NULL;
+    if(value == NULL)
+        return NULL;
+    
     node_t *currentElement = llist->head;
     while(currentElement != NULL){
         if(currentElement->data == value)
@@ -214,6 +230,9 @@ int8_t getIndexByPtrValueLList(llist_t *llist, value_type_t *value){
 
 llist_t *deleteLList(llist_t *llist){
 
+    if(llist == NULL)
+        return NULL;
+
     node_t *temp;
     node_t *currentElement = llist->head;
 
@@ -227,21 +246,6 @@ llist_t *deleteLList(llist_t *llist){
         currentElement = temp;
     }
     free(llist);
-
-    return NULL;
-}
-
-node_t *__get_Next_Node(llist_t *llist, node_t *node){
-
-    node_t *currentNode = llist->head;
-    if(currentNode == node)
-        return node;
-
-    while(currentNode != NULL){
-        if(currentNode->prevPrt == node)
-            return currentNode;
-        currentNode = currentNode->prevPrt;
-    }
 
     return NULL;
 }
@@ -279,6 +283,21 @@ node_t *deleteNode(llist_t *llist, node_t *node){
     return __free_node(node);
 }
 
+node_t *__get_Next_Node(llist_t *llist, node_t *node){
+
+    node_t *currentNode = llist->head;
+    if(currentNode == node)
+        return node;
+
+    while(currentNode != NULL){
+        if(currentNode->prevPrt == node)
+            return currentNode;
+        currentNode = currentNode->prevPrt;
+    }
+
+    return NULL;
+}
+
 node_t *deleteIndexNode(llist_t *llist, uint8_t index){
    if(isEmptyLList(llist))
         return NULL;
@@ -295,9 +314,6 @@ node_t *popHeadLList(llist_t *llist){
 }
 
 node_t *popLList(llist_t *llist){
-    if(llist->head == NULL)
-        return NULL;
-
     if(isEmptyLList(llist))
         return NULL;
     
@@ -316,12 +332,12 @@ value_type_t *getPtrValueByNode(node_t *node){
     return node->data;
 }
 
-value_type_t getValueByIndex(llist_t *llist, uint8_t index){
+value_type_t getLListValueByIndex(llist_t *llist, uint8_t index){
     node_t *node = getNodeByIndex(llist, index);
     return getValueByNode(node);
 }
 
-value_type_t *getPtrValueByIndex(llist_t *llist, uint8_t index){
+value_type_t *getLListPtrValueByIndex(llist_t *llist, uint8_t index){
     node_t *node = getNodeByIndex(llist, index);
     return getPtrValueByNode(node);
 }
@@ -352,6 +368,8 @@ void printLList(llist_t *llist, uint8_t elementCount){
 
 dllist_t *createDLList(){
     dllist_t *llist = (dllist_t *)malloc(sizeof(dllist_t));
+    if(llist == NULL)
+        return NULL;
     llist->head = NULL;
     llist->back = NULL;
     llist->size = 0;
@@ -359,12 +377,13 @@ dllist_t *createDLList(){
 }
 
 bool isEmptyDLList(dllist_t *llist){
-    return ((llist->head == NULL) && (llist->size == 0) && llist->back == NULL);
+    if(llist == NULL) return NULL;
+    return ((llist->head == NULL) && llist->back == NULL && (llist->size == 0));
 }
 
 dnode_t *createDNode(size_t dataSize){
     dnode_t *newElement = (dnode_t *)malloc(sizeof(dnode_t));
-    if(!newElement)
+    if(newElement == NULL)
         return NULL;
     
     newElement->data = (value_type_t *)malloc(dataSize);
@@ -379,6 +398,8 @@ dnode_t *createDNode(size_t dataSize){
 dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value){
     dnode_t *newElement = createDNode(sizeof(value_type_t));
     if(newElement == NULL)
+        return NULL;
+    if(llist == NULL)
         return NULL;
 
     *(newElement->data) = value;
@@ -399,6 +420,8 @@ dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value){
 dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value){
     dnode_t *newElement = createDNode(sizeof(value_type_t));
     if(newElement == NULL)
+        return NULL;
+    if(llist == NULL)
         return NULL;
 
     newElement->data = value;
@@ -463,12 +486,12 @@ dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value){
 
     if(isEmptyDLList(llist))
         return insertHeadDLList(llist, value);
-    if(index <= 0)
+    if(index <= 0)                                  // insert every Elemen with index 0 and under to back of Linked-List
         return insertBackDLList(llist, value);
-    if(index >= (llist->size - 1))
+    else if(index <= (llist->size - 1))             // insert every Element with index of last Element in Linked-List and above to head of Linked-List
         return insertHeadDLList(llist, value);
 
-    dnode_t *replacingElement = __get_index_element(llist, index);
+    dnode_t *replacingElement = getDNodeByIndex(llist, index);
     dnode_t *newElement = createDNode(sizeof(value_type_t));
 
     *(newElement->data) = value;
@@ -492,7 +515,7 @@ dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, value_type_t *value){
     if(index >= (llist->size - 1))
         return insertPtrHeadDLList(llist, value);
 
-    dnode_t *replacingElement = __get_index_element(llist, index);
+    dnode_t *replacingElement = getDNodeByIndex(llist, index);
     dnode_t *newElement = createDNode(sizeof(value));
 
     newElement->data = value;
@@ -505,21 +528,20 @@ dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, value_type_t *value){
     return newElement;
 }
 
-dnode_t * __get_index_element(dllist_t *llist, int8_t i){
-
+dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index){
     if(isEmptyDLList(llist))
         return NULL;
 
-    dnode_t *usedNode = __head_or_back(llist, i);
+    dnode_t *usedNode = __head_or_back(llist, index);
     if(usedNode == llist->head){
-        int8_t destinationI = (int8_t)(llist->size - 1- i);
+        int8_t destinationI = (int8_t)(llist->size - 1- index);
         if(destinationI <= 0)
-            return usedNode;
+            return llist->head;
         return __head_to_back(usedNode, destinationI);
     } else {
-        if(i == 0)
-            return usedNode;
-        return __back_to_head(usedNode, i);
+        if(index == 0)
+            return llist->back;
+        return __back_to_head(usedNode, index);
     }
 }
 
@@ -540,22 +562,17 @@ dnode_t *__head_to_back(dnode_t *head, int8_t steps){
 }
 
 dnode_t *__back_to_head(dnode_t *back, int8_t steps){
-    dnode_t *cE = back;
+    dnode_t *e = back;
     for(uint8_t i = 0; i < steps; i++){
-        if(cE->nextPrt != NULL)
-            cE = cE->nextPrt;
+        if(e->nextPrt != NULL)
+            e = e->nextPrt;
     }
-    return cE;
-}
-
-dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index){
-    return __get_index_element(llist, index);
+    return e;
 }
 
 int8_t getIndexByDNode(dllist_t *llist, dnode_t *node){
 
     if(isEmptyDLList(llist)) return -1;
-    if(llist == NULL) return -1;
     if(node == NULL) return -1;
 
     dnode_t *currentElement = llist->back;
@@ -571,6 +588,10 @@ int8_t getIndexByDNode(dllist_t *llist, dnode_t *node){
 }
 
 dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value){
+
+    if(llist == NULL)
+        return NULL;
+
     dnode_t *currentElement = llist->head;
     while(currentElement != NULL){
         if(*(currentElement->data) == value)
@@ -581,6 +602,12 @@ dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value){
 }
 
 dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value){
+
+    if(llist == NULL)
+        return NULL;
+    if(value == NULL)
+        return NULL;
+
     dnode_t *currentElement = llist->head;
     while(currentElement != NULL){
         if(currentElement->data == value)
@@ -601,6 +628,10 @@ int8_t getIndexByPtrValueDLList(dllist_t *llist, value_type_t *value){
 }
 
 dllist_t *deleteDLList(dllist_t *llist){
+
+    if(llist == NULL)
+        return NULL;
+
     dnode_t *temp;
     dnode_t *currentElement = llist->head;
 
@@ -682,6 +713,28 @@ dnode_t *popDLList(dllist_t *llist){
         return NULL;
 
     return deleteDNode(llist, llist->back);
+}
+
+value_type_t getValueByDNode(dnode_t *node){
+    if(node == NULL)
+        return NULL;
+    return *(node->data);
+}
+
+value_type_t *getPtrValueByDNode(dnode_t *node){
+    if(node == NULL)
+        return NULL;
+    return node->data;
+}
+
+value_type_t getDLListValueByIndex(dllist_t *llist, uint8_t index){
+    dnode_t *node = getDNodeByIndex(llist, index);
+    return getValueByDNode(node);
+}
+
+value_type_t *getDLListPtrValueByIndex(dllist_t *llist, uint8_t index){
+    dnode_t *node = getDNodeByIndex(llist, index);
+    return getPtrValueByDNode(node);
 }
 
 void printDLList(dllist_t *llist, uint8_t elementCount){

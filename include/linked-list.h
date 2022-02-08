@@ -8,8 +8,8 @@
 typedef uint8_t value_type_t; 
 
 typedef struct node {
-    value_type_t *data;
     struct node *prevPrt;
+    value_type_t *data;
 } node_t;
 
 typedef struct llist {
@@ -18,9 +18,9 @@ typedef struct llist {
 } llist_t;
 
 typedef struct dnode {
-    value_type_t *data;
     struct dnode *nextPrt;
     struct dnode *prevPrt;
+    value_type_t *data;
 } dnode_t;
 
 typedef struct dllist {
@@ -70,8 +70,8 @@ node_t *popLList(llist_t *llist);
 value_type_t getValueByNode(node_t *node);
 value_type_t *getPtrValueByNode(node_t *node);
 
-value_type_t getValueByIndex(llist_t *llist, uint8_t index);
-value_type_t *getPtrValueByIndex(llist_t *llist, uint8_t index);
+value_type_t getLListValueByIndex(llist_t *llist, uint8_t index);
+value_type_t *getLListPtrValueByIndex(llist_t *llist, uint8_t index);
 
 void printLList(llist_t *llist, uint8_t elementCount);
 
@@ -94,12 +94,11 @@ dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value);
 
 dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value);
 dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, value_type_t *value);
-dnode_t * __get_index_element(dllist_t *llist, int8_t i);
+
+dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index);
 dnode_t *__head_or_back(dllist_t *llist, int8_t i);
 dnode_t *__head_to_back(dnode_t *head, int8_t steps);
 dnode_t *__back_to_head(dnode_t *back, int8_t steps);
-
-dnode_t *getDNodeByIndex(dllist_t *llist, int8_t index);
 int8_t getIndexByDNode(dllist_t *llist, dnode_t *node);
 
 dnode_t *getDNodeByValue(dllist_t *llist, uint8_t value);
@@ -114,6 +113,12 @@ dnode_t * __free_dnode(dnode_t *node);
 dnode_t *deleteIndexDNode(dllist_t *llist, int8_t index);
 dnode_t *popHeadDLList(dllist_t *llist);
 dnode_t *popDLList(dllist_t *llist);
+
+value_type_t getValueByDNode(dnode_t *node);
+value_type_t *getPtrValueByDNode(dnode_t *node);
+
+value_type_t getDLListValueByIndex(dllist_t *llist, uint8_t index);
+value_type_t *getDLListPtrValueByIndex(dllist_t *llist, uint8_t index);
 
 void printDLList(dllist_t *llist, uint8_t elementCount);
 
