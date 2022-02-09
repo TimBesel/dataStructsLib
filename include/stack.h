@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 typedef uint8_t *stack_value_type_t; 
-#define NO_VALUE (stack_value_type_t)NULL
+#define STACK_NO_VALUE (stack_value_type_t)NULL
 
 typedef struct stack
 {

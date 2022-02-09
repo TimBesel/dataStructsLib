@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 typedef uint8_t *queue_value_type_t;
-#define NO_VALUE (queue_value_type_t)NULL
+#define QUEUE_NO_VALUE (queue_value_type_t)NULL
 
 typedef struct queue
 {

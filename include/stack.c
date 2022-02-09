@@ -62,17 +62,17 @@ void stackPush(stack_t *stack, stack_value_type_t value){
 
 stack_value_type_t stackPop(stack_t *stack){
     if(stackIsEmpty(stack))
-        return NO_VALUE;
+        return STACK_NO_VALUE;
 
     stack->size--;
     stack_value_type_t temp = stack->data[stack->size];
-    stack->data[stack->size] = NO_VALUE;
+    stack->data[stack->size] = STACK_NO_VALUE;
 
     return temp;
 }
 
 stack_value_type_t stackTop(stack_t *stack){
     if(stackIsEmpty(stack))
-        return NO_VALUE;
+        return STACK_NO_VALUE;
     return stack->data[stack->size-1];
 }

@@ -102,10 +102,10 @@ void queuePush(queue_t *queue, queue_value_type_t value){
 
 queue_value_type_t queuePop(queue_t *queue){
     if(queueIsEmpty(queue))
-        return NO_VALUE;
+        return QUEUE_NO_VALUE;
 
     queue_value_type_t temp = queue->data[queue->front_idx];
-    queue->data[queue->front_idx] = NO_VALUE;
+    queue->data[queue->front_idx] = QUEUE_NO_VALUE;
     queue->front_idx = (uint8_t)((queue->front_idx + 1) % queue->capacity);
     queue->size--;
 
@@ -114,12 +114,12 @@ queue_value_type_t queuePop(queue_t *queue){
 
 queue_value_type_t queueFront(queue_t *queue){
     if(queueIsEmpty(queue))
-        return NO_VALUE;
+        return QUEUE_NO_VALUE;
     return queue->data[queue->front_idx - 1u];
 }
 
 queue_value_type_t queueBack(queue_t *queue){
     if(queueIsEmpty(queue))
-        return NO_VALUE;
+        return QUEUE_NO_VALUE;
     return queue->data[queue->back_idx - 1u];
 }
