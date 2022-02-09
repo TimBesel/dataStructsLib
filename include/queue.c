@@ -8,8 +8,8 @@ queue_t *createQueue(uint8_t capacity){
     if(!queue)
         return NULL;
     
-    uint8_t data_size = capacity * sizeof(value_type_t);
-    value_type_t *data = (value_type_t *)malloc(data_size);
+    uint8_t data_size = capacity * sizeof(queue_value_type_t);
+    queue_value_type_t *data = (queue_value_type_t *)malloc(data_size);
 
     if(!data){
         free(queue);
@@ -32,8 +32,8 @@ queue_t *reQueue(queue_t *queue, uint8_t capacity){
     __clean_Queue(queue);
 
 	queue->capacity = capacity;
-    size_t data_size = capacity * sizeof(value_type_t);
-    queue->data = (value_type_t *)realloc(queue->data, data_size);
+    size_t data_size = capacity * sizeof(queue_value_type_t);
+    queue->data = (queue_value_type_t *)realloc(queue->data, data_size);
 
     if(queue->back_idx == 0)
         queue->back_idx = queue->capacity - 1;
@@ -47,9 +47,9 @@ void __clean_Queue(queue_t *queue){
     queue->back_idx = (uint8_t)(queue->front_idx + queue->size) % queue->capacity;
 }
 
-void __resort_Queue(value_type_t data[], uint8_t n, uint8_t k){
+void __resort_Queue(queue_value_type_t data[], uint8_t n, uint8_t k){
 	int8_t d = -1, i, j;
-    value_type_t temp;
+    queue_value_type_t temp;
 	for(i = 0; i < __gcd(n, k); i++){
 		j = i;
 		temp = data[i];
@@ -92,7 +92,7 @@ bool queueIsEmpty(queue_t *queue){
     return (!queue->size);
 }
 
-void queuePush(queue_t *queue, value_type_t value){
+void queuePush(queue_t *queue, queue_value_type_t value){
     if(queueIsFull(queue))
         return;
     queue->data[queue->back_idx] = value;
@@ -100,11 +100,11 @@ void queuePush(queue_t *queue, value_type_t value){
     queue->size++;
 }
 
-value_type_t queuePop(queue_t *queue){
+queue_value_type_t queuePop(queue_t *queue){
     if(queueIsEmpty(queue))
         return NO_VALUE;
 
-    value_type_t temp = queue->data[queue->front_idx];
+    queue_value_type_t temp = queue->data[queue->front_idx];
     queue->data[queue->front_idx] = NO_VALUE;
     queue->front_idx = (uint8_t)((queue->front_idx + 1) % queue->capacity);
     queue->size--;
@@ -112,13 +112,13 @@ value_type_t queuePop(queue_t *queue){
     return temp;
 }
 
-value_type_t queueFront(queue_t *queue){
+queue_value_type_t queueFront(queue_t *queue){
     if(queueIsEmpty(queue))
         return NO_VALUE;
     return queue->data[queue->front_idx - 1u];
 }
 
-value_type_t queueBack(queue_t *queue){
+queue_value_type_t queueBack(queue_t *queue){
     if(queueIsEmpty(queue))
         return NO_VALUE;
     return queue->data[queue->back_idx - 1u];
