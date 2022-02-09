@@ -6,13 +6,13 @@
 
 stack_t *createStack(uint8_t capacity){
     stack_t *stack = (stack_t *)malloc(sizeof(stack_t));
-    if(!stack)
+    if(stack == NULL)
         return NULL;
     
     size_t data_size = capacity * sizeof(value_type_t);
     value_type_t *data = (value_type_t *)malloc(data_size);
 
-    if(!data){
+    if(data == NULL){
         free(stack);
         return NULL;
     }
@@ -25,8 +25,9 @@ stack_t *createStack(uint8_t capacity){
 }
 
 stack_t *reStack(stack_t *stack, uint8_t capacity){
-    if(!stack->data)
+    if(stack->data == NULL){
         return NULL;
+    }
 	
 	stack->capacity = capacity;
     size_t data_size = capacity * sizeof(value_type_t);
@@ -35,7 +36,7 @@ stack_t *reStack(stack_t *stack, uint8_t capacity){
     return stack;
 }
 
-stack_t *freeStack(stack_t *stack){
+stack_t *deleteStack(stack_t *stack){
     if(stack){
         if(stack->data)
             free(stack->data);
@@ -74,8 +75,4 @@ value_type_t stackTop(stack_t *stack){
     if(stackIsEmpty(stack))
         return NO_VALUE;
     return stack->data[stack->size-1];
-}
-
-void printStack(stack_t *stack){
-
 }
