@@ -757,7 +757,7 @@ dnode_t *deleteDNodeByIndex(dllist_t *llist, int8_t index){
 dnode_t *popHeadDLList(dllist_t *llist){
     if(isEmptyDLList(llist))
         return NULL;
-
+        
     return deleteDNode(llist, llist->head);
 }
 
