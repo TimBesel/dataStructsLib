@@ -28,7 +28,7 @@ node_t *createNode(size_t dataSize){
     if(newElement == NULL)
         return NULL;
     
-    newElement->data = (value_type_t *)malloc(dataSize);
+    newElement->data = (llist_value_type_t *)malloc(dataSize);
     if(!newElement->data){
         free(newElement);
         return NULL;
@@ -37,9 +37,9 @@ node_t *createNode(size_t dataSize){
     return newElement;
 }
 
-node_t *insertHeadLList(llist_t *llist, value_type_t value){
+node_t *insertHeadLList(llist_t *llist, llist_value_type_t value){
     
-    node_t *newElement = createNode(sizeof(value_type_t));
+    node_t *newElement = createNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
     if(llist == NULL)
@@ -53,9 +53,9 @@ node_t *insertHeadLList(llist_t *llist, value_type_t value){
     return newElement;
 }
 
-node_t *insertPtrHeadLList(llist_t *llist, value_type_t *value){
+node_t *insertPtrHeadLList(llist_t *llist, llist_value_type_t *value){
     
-    node_t *newElement = createNode(sizeof(value_type_t));
+    node_t *newElement = createNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
     if(llist == NULL)
@@ -69,8 +69,8 @@ node_t *insertPtrHeadLList(llist_t *llist, value_type_t *value){
     return newElement;
 }
 
-node_t *insertEndLList(llist_t *llist, value_type_t value){
-    node_t *newElement = createNode(sizeof(value_type_t));
+node_t *insertEndLList(llist_t *llist, llist_value_type_t value){
+    node_t *newElement = createNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
 
@@ -84,8 +84,8 @@ node_t *insertEndLList(llist_t *llist, value_type_t value){
     return newElement;
 }
 
-node_t *insertPtrEndLList(llist_t *llist, value_type_t *value){
-    node_t *newElement = createNode(sizeof(value_type_t));
+node_t *insertPtrEndLList(llist_t *llist, llist_value_type_t *value){
+    node_t *newElement = createNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
 
@@ -108,7 +108,7 @@ void __warped_insertEndLList(node_t *head, node_t *newElement){
     currentElement->prevPrt = newElement;
 }
 
-node_t *insertLList(llist_t *llist, uint8_t index, value_type_t value){
+node_t *insertLList(llist_t *llist, uint8_t index, llist_value_type_t value){
 
     int8_t destinationIndex = (int8_t) (llist->size - index);
     if(isEmptyLList(llist))
@@ -116,7 +116,7 @@ node_t *insertLList(llist_t *llist, uint8_t index, value_type_t value){
     if(destinationIndex <= 0)
          return insertHeadLList(llist, value);
 
-    node_t *newElement = createNode(sizeof(value_type_t));
+    node_t *newElement = createNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
 
@@ -127,7 +127,7 @@ node_t *insertLList(llist_t *llist, uint8_t index, value_type_t value){
     return newElement;
 }
 
-node_t *insertPtrLList(llist_t *llist, uint8_t index, value_type_t *value){
+node_t *insertPtrLList(llist_t *llist, uint8_t index, llist_value_type_t *value){
 
     int8_t destinationIndex = (int8_t) (llist->size - index);
     if(isEmptyLList(llist))
@@ -135,7 +135,7 @@ node_t *insertPtrLList(llist_t *llist, uint8_t index, value_type_t *value){
     if(destinationIndex <= 0)
          return insertPtrHeadLList(llist, value);
 
-    node_t *newElement = createNode(sizeof(value_type_t));
+    node_t *newElement = createNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
 
@@ -218,12 +218,12 @@ node_t *getNodeByPtrValue(llist_t *llist, uint8_t *value){
     return NULL;
 }
 
-int8_t getIndexByValueLList(llist_t *llist, value_type_t value){
+int8_t getIndexByValueLList(llist_t *llist, llist_value_type_t value){
     node_t *node = getNodeByValue(llist, value);
     return getIndexByNode(llist, node);
 }
 
-int8_t getIndexByPtrValueLList(llist_t *llist, value_type_t *value){
+int8_t getIndexByPtrValueLList(llist_t *llist, llist_value_type_t *value){
     node_t *node = getNodeByPtrValue(llist, value);
     return getIndexByNode(llist, node);
 }
@@ -320,29 +320,29 @@ node_t *popLList(llist_t *llist){
     return deleteNodeByIndex(llist, 0);
 }
 
-value_type_t getValueByNode(node_t *node){
+llist_value_type_t getValueByNode(node_t *node){
     if(node == NULL)
-        return (value_type_t)INFINITY;
+        return (llist_value_type_t)INFINITY;
     return *(node->data);
 }
 
-value_type_t *getPtrValueByNode(node_t *node){
+llist_value_type_t *getPtrValueByNode(node_t *node){
     if(node == NULL)
         return NULL;
     return node->data;
 }
 
-value_type_t getLListValueByIndex(llist_t *llist, uint8_t index){
+llist_value_type_t getLListValueByIndex(llist_t *llist, uint8_t index){
     node_t *node = getNodeByIndex(llist, index);
     return getValueByNode(node);
 }
 
-value_type_t *getLListPtrValueByIndex(llist_t *llist, uint8_t index){
+llist_value_type_t *getLListPtrValueByIndex(llist_t *llist, uint8_t index){
     node_t *node = getNodeByIndex(llist, index);
     return getPtrValueByNode(node);
 }
 
-node_t *changeNodeValue(node_t *node, value_type_t value){
+node_t *changeNodeValue(node_t *node, llist_value_type_t value){
     if(node == NULL)
         return NULL;
 
@@ -350,7 +350,7 @@ node_t *changeNodeValue(node_t *node, value_type_t value){
     return node;
 }
 
-node_t *changeNodePtrValue( node_t *node, value_type_t *value){
+node_t *changeNodePtrValue( node_t *node, llist_value_type_t *value){
     if(node == NULL)
         return NULL;
 
@@ -358,14 +358,14 @@ node_t *changeNodePtrValue( node_t *node, value_type_t *value){
     return node;
 }
 
-node_t *changeLListValue(llist_t *llist, uint8_t index, value_type_t value){
+node_t *changeLListValue(llist_t *llist, uint8_t index, llist_value_type_t value){
     node_t *node = getNodeByIndex(llist, index);
     if(node == NULL)
         return NULL;
     return changeNodeValue(node, value);
 }
 
-node_t *changeLListPtrValue(llist_t *llist, uint8_t index, value_type_t *value){
+node_t *changeLListPtrValue(llist_t *llist, uint8_t index, llist_value_type_t *value){
     node_t *node = getNodeByIndex(llist, index);
     if(node == NULL)
         return NULL;
@@ -384,8 +384,8 @@ node_t *changeNodeIndex(llist_t *llist, node_t *node, uint8_t newIndex){
     if(newIndex == currentIndex)
         return node;
     if(newIndex > currentIndex){
-        value_type_t *temp1 = node->data;
-        value_type_t *temp2;
+        llist_value_type_t *temp1 = node->data;
+        llist_value_type_t *temp2;
         while(currentElement->prevPrt != NULL){
             temp2 = currentElement->prevPrt->data;
             currentElement->prevPrt->data = currentElement->data;
@@ -441,7 +441,7 @@ dnode_t *createDNode(size_t dataSize){
     if(newElement == NULL)
         return NULL;
     
-    newElement->data = (value_type_t *)malloc(dataSize);
+    newElement->data = (llist_value_type_t *)malloc(dataSize);
     if(!newElement->data){
         free(newElement);
         return NULL;
@@ -450,8 +450,8 @@ dnode_t *createDNode(size_t dataSize){
     return newElement;
 }
 
-dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value){
-    dnode_t *newElement = createDNode(sizeof(value_type_t));
+dnode_t *insertHeadDLList(dllist_t *llist, llist_value_type_t value){
+    dnode_t *newElement = createDNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
     if(llist == NULL)
@@ -472,8 +472,8 @@ dnode_t *insertHeadDLList(dllist_t *llist, value_type_t value){
     return newElement;
 }
 
-dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value){
-    dnode_t *newElement = createDNode(sizeof(value_type_t));
+dnode_t *insertPtrHeadDLList(dllist_t *llist, llist_value_type_t *value){
+    dnode_t *newElement = createDNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
     if(llist == NULL)
@@ -494,8 +494,8 @@ dnode_t *insertPtrHeadDLList(dllist_t *llist, value_type_t *value){
     return newElement;
 }
 
-dnode_t *insertBackDLList(dllist_t *llist, value_type_t value){
-    dnode_t *newElement = createDNode(sizeof(value_type_t));
+dnode_t *insertBackDLList(dllist_t *llist, llist_value_type_t value){
+    dnode_t *newElement = createDNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
 
@@ -514,8 +514,8 @@ dnode_t *insertBackDLList(dllist_t *llist, value_type_t value){
     return newElement;
 }
 
-dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value){
-    dnode_t *newElement = createDNode(sizeof(value_type_t));
+dnode_t *insertPtrBackDLList(dllist_t *llist, llist_value_type_t *value){
+    dnode_t *newElement = createDNode(sizeof(llist_value_type_t));
     if(newElement == NULL)
         return NULL;
 
@@ -534,7 +534,7 @@ dnode_t *insertPtrBackDLList(dllist_t *llist, value_type_t *value){
     return newElement;
 }
 
-dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value){
+dnode_t *insertDLList(dllist_t *llist, int8_t index, llist_value_type_t value){
 
     if(llist == NULL)
         return NULL;
@@ -547,7 +547,7 @@ dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value){
         return insertHeadDLList(llist, value);
 
     dnode_t *replacingElement = getDNodeByIndex(llist, index);
-    dnode_t *newElement = createDNode(sizeof(value_type_t));
+    dnode_t *newElement = createDNode(sizeof(llist_value_type_t));
 
     *(newElement->data) = value;
 
@@ -559,7 +559,7 @@ dnode_t *insertDLList(dllist_t *llist, int8_t index, value_type_t value){
     return newElement;
 }
 
-dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, value_type_t *value){
+dnode_t *insertDPtrLList(dllist_t *llist, int8_t index, llist_value_type_t *value){
     if(llist == NULL)
         return NULL;
 
@@ -670,12 +670,12 @@ dnode_t *getDNodeByPtrValue(dllist_t *llist, uint8_t *value){
     return NULL;
 }
 
-int8_t getIndexByValueDLList(dllist_t *llist, value_type_t value){
+int8_t getIndexByValueDLList(dllist_t *llist, llist_value_type_t value){
     dnode_t *node = getDNodeByValue(llist, value);
     return getIndexByDNode(llist, node);
 }
 
-int8_t getIndexByPtrValueDLList(dllist_t *llist, value_type_t *value){
+int8_t getIndexByPtrValueDLList(dllist_t *llist, llist_value_type_t *value){
     dnode_t *node = getDNodeByPtrValue(llist, value);
     return getIndexByDNode(llist, node);
 }
@@ -768,29 +768,29 @@ dnode_t *popDLList(dllist_t *llist){
     return deleteDNode(llist, llist->back);
 }
 
-value_type_t getValueByDNode(dnode_t *node){
+llist_value_type_t getValueByDNode(dnode_t *node){
     if(node == NULL)
-        return (value_type_t)INFINITY;
+        return (llist_value_type_t)INFINITY;
     return *(node->data);
 }
 
-value_type_t *getPtrValueByDNode(dnode_t *node){
+llist_value_type_t *getPtrValueByDNode(dnode_t *node){
     if(node == NULL)
         return NULL;
     return node->data;
 }
 
-value_type_t getDLListValueByIndex(dllist_t *llist, int8_t index){
+llist_value_type_t getDLListValueByIndex(dllist_t *llist, int8_t index){
     dnode_t *node = getDNodeByIndex(llist, index);
     return getValueByDNode(node);
 }
 
-value_type_t *getDLListPtrValueByIndex(dllist_t *llist, int8_t index){
+llist_value_type_t *getDLListPtrValueByIndex(dllist_t *llist, int8_t index){
     dnode_t *node = getDNodeByIndex(llist, index);
     return getPtrValueByDNode(node);
 }
 
-dnode_t *changeDNodeValue(dnode_t *node, value_type_t value){
+dnode_t *changeDNodeValue(dnode_t *node, llist_value_type_t value){
     if(node == NULL)
         return NULL;
 
@@ -798,7 +798,7 @@ dnode_t *changeDNodeValue(dnode_t *node, value_type_t value){
     return node;
 }
 
-dnode_t *changeDNodePtrValue(dnode_t *node, value_type_t *value){
+dnode_t *changeDNodePtrValue(dnode_t *node, llist_value_type_t *value){
     if(node == NULL)
         return NULL;
 
@@ -806,14 +806,14 @@ dnode_t *changeDNodePtrValue(dnode_t *node, value_type_t *value){
     return node;
 }
 
-dnode_t *changeDLListValue(dllist_t *llist, int8_t index, value_type_t value){
+dnode_t *changeDLListValue(dllist_t *llist, int8_t index, llist_value_type_t value){
     dnode_t *node = getDNodeByIndex(llist, index);
     if(node == NULL)
         return NULL;
     return changeDNodeValue(node, value);
 }
 
-dnode_t *changeDLListPtrValue(dllist_t *llist, int8_t index, value_type_t *value){
+dnode_t *changeDLListPtrValue(dllist_t *llist, int8_t index, llist_value_type_t *value){
     dnode_t *node = getDNodeByIndex(llist, index);
     if(node == NULL)
         return NULL;
@@ -831,7 +831,7 @@ dnode_t *changeDNodeIndex(dllist_t *llist, dnode_t *node, int8_t newIndex){
     if(newIndex == currentIndex)
         return node;
     if(newIndex > currentIndex){
-        value_type_t *temp = node->data;
+        llist_value_type_t *temp = node->data;
         while(node->nextPrt != NULL){
             node->data = node->nextPrt->data;
             node = node->nextPrt;
@@ -841,7 +841,7 @@ dnode_t *changeDNodeIndex(dllist_t *llist, dnode_t *node, int8_t newIndex){
             }
         }
     } else {
-        value_type_t *temp = node->data;
+        llist_value_type_t *temp = node->data;
         while(node->prevPrt != NULL){
             node->data = node->prevPrt->data;
             node = node->prevPrt;
@@ -855,7 +855,7 @@ dnode_t *changeDNodeIndex(dllist_t *llist, dnode_t *node, int8_t newIndex){
 }
 
 void switchDNodes(dnode_t *nodeA, dnode_t *nodeB){
-    value_type_t *temp = nodeA->data;
+    llist_value_type_t *temp = nodeA->data;
     nodeA->data = nodeB->data;
     nodeB->data = temp;
 }
