@@ -854,16 +854,37 @@ dnode_t *changeDNodeIndex(dllist_t *llist, dnode_t *node, int8_t newIndex){
     return NULL;
 }
 
-void switchDNodes(dnode_t *nodeA, dnode_t *nodeB){
+void switchDNodeValues(dnode_t *nodeA, dnode_t *nodeB){
     llist_value_type_t *temp = nodeA->data;
     nodeA->data = nodeB->data;
     nodeB->data = temp;
 }
 
-void switchDNodesByIndex(dllist_t *llist, int8_t indexA, int8_t indexB){
+void switchDNodeValuesByIndex(dllist_t *llist, int8_t indexA, int8_t indexB){
     dnode_t *nodeA = getDNodeByIndex(llist, indexA);
     dnode_t *nodeB = getDNodeByIndex(llist, indexB);
     switchDNodes(nodeA, nodeB);
+}
+
+void switchDNodes(dnode_t *nodeA, dnode_t *nodeB){
+    dnode_t *tempNext = nodeA->nextPrt;
+    dnode_t *tempPrev = nodeA->prevPrt;
+
+    if(nodeA->nextPrt != NULL)
+        nodeA->nextPrt->prevPrt = nodeB;
+    if(nodeA->prevPrt != NULL)
+        nodeA->prevPrt->nextPrt = nodeB;
+    
+    if(nodeB->nextPrt != NULL)
+        nodeB->nextPrt->prevPrt = nodeA;
+    if(nodeB->prevPrt != NULL)
+        nodeB->prevPrt->nextPrt = nodeA;
+
+    nodeA->nextPrt = nodeB->nextPrt;
+    nodeA->prevPrt = nodeB->nextPrt;
+
+    nodeB->nextPrt = tempNext;
+    nodeB->prevPrt = tempPrev;
 }
 
 void printDLList(dllist_t *llist, uint8_t elementCount){

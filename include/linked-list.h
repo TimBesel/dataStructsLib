@@ -135,8 +135,10 @@ dnode_t *changeDLListValue(dllist_t *llist, int8_t index, llist_value_type_t val
 dnode_t *changeDLListPtrValue(dllist_t *llist, int8_t index, llist_value_type_t *value);
 
 dnode_t *changeDNodeIndex(dllist_t *llist, dnode_t *node, int8_t newIndex);
+void switchDNodeValues(dnode_t *nodeA, dnode_t *nodeB);
+void switchDNodeValuesByIndex(dllist_t *llist, int8_t indexA, int8_t indexB);
+
 void switchDNodes(dnode_t *nodeA, dnode_t *nodeB);
-void switchDNodesByIndex(dllist_t *llist, int8_t indexA, int8_t indexB);
 
 void printDLList(dllist_t *llist, uint8_t elementCount);
 
